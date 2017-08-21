@@ -7,19 +7,58 @@
 //
 
 #import "AppDelegate.h"
-
+#import <ECSlidingViewController/ECSlidingViewController.h>
 @interface AppDelegate ()
+@property (strong, nonatomic)ECSlidingViewController *slidingVC;
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate  //少了一个协议
 
-
+//整个App第一个会执行的逻辑方法
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    //设置app入口
+    //初始化窗口（不用故事版入口箭头的时候 ，系统不会默认设置窗口，需要手动设置）
+    _window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    //将窗口可视化
+    [_window makeKeyAndVisible];
+    
+    UINavigationController *navi = [Utilities getStoryboardInstance:@"Main" byIdentity:@"HomeNavi"];
+    //创建门框（初始化的同事顺便设置好门框最外层的那扇门，也就是用户首先会看到的正中间的页面）
+    _slidingVC = [[ECSlidingViewController alloc]initWithTopViewController:navi];
+    //签协议
+   // _slidingVC.delegate = self;
+    //放好左边那扇门
+    _slidingVC.underLeftViewController = [Utilities getStoryboardInstance:@"Member" byIdentity:@"Left"];
+    //设置手势（让中间的门能够对拖拽与触摸响应）
+    _slidingVC.topViewAnchoredGesture = ECSlidingViewControllerAnchoredGestureTapping |ECSlidingViewControllerAnchoredGesturePanning;
+    //把上述手势添加到中间那扇门
+    [navi.view addGestureRecognizer:_slidingVC.panGesture];
+    //设置侧滑动画的执行时间
+    _slidingVC.defaultTransitionDuration = 0.25;//秒
+    //设置滑动的幅度（中间那扇门打开的宽度）
+    _slidingVC.anchorRightPeekAmount = UI_SCREEN_W / 6;
+    
+    //窗口app入口
+    _window.rootViewController= _slidingVC;
+    //注册侧滑按钮被按的监听
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(leftSwitchAction:) name:@"LeftSwitch" object:nil];
+    //实例 - 观察者 -
     return YES;
+    
 }
-
+-(void)leftSwitchAction: (NSNotification *)note{
+    NSLog(@"侧滑");
+    //当合上的状态下，当打开的状态下
+    if(_slidingVC.currentTopViewPosition == ECSlidingViewControllerTopViewPositionCentered){
+        [_slidingVC anchorTopViewToRightAnimated:YES];
+    }else{
+    
+        [_slidingVC resetTopViewAnimated:YES];
+    }
+    
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

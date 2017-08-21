@@ -22,13 +22,35 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self naviConfig];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)naviConfig{
+    //设置导航条标题文字
+    self.navigationItem.title=@"城市列表";
+    //设置导航条的风格颜色
+    self.navigationController.navigationBar.barTintColor=[UIColor brownColor];
+    //设置导航条标题颜色
+    self.navigationController.navigationBar.titleTextAttributes=@{NSForegroundColorAttributeName:[UIColor blueColor]};
+    //设置导航条是否被隐藏
+    self.navigationController.navigationBar.hidden=NO;
+    //设置导航条上按钮的风格颜色
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+    //设置是否需要毛玻璃效果
+    self.navigationController.navigationBar.translucent=YES;
+    //为导航条左上角创建一个按钮
+    UIBarButtonItem *left =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(backAction)];
+    self.navigationItem.leftBarButtonItem =left;
+}
+//用Model的方式返回上一页
+-(void)backAction{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self.navigationController popViewControllerAnimated:YES];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

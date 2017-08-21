@@ -12,20 +12,23 @@
 #import "UIImageView+WebCache.h"
 #import "DetailViewController.h"
 #import "IssueViewController.h"
-@interface ListViewController ()<UITableViewDelegate,UITableViewDataSource>{
+#import <CoreLocation/CoreLocation.h>
+@interface ListViewController ()<UITableViewDelegate,UITableViewDataSource,CLLocationManagerDelegate>{
     NSInteger page;
     NSInteger perPage;
     NSInteger totalPage;
     BOOL isLoading;
+    BOOL firstVisit;
 }
 - (IBAction)favoAction:(UIButton *)sender forEvent:(UIEvent *)event;
-
+- (IBAction)SwitchAction:(UIBarButtonItem *)sender;
 - (IBAction)searchAction:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UITableView *activityTableView;
-//@property (strong, nonatomic) NSArray *arr;//
 @property (strong,nonatomic)NSMutableArray *arr;
 @property(strong,nonatomic)UIImageView*zoomIv;
 @property(strong,nonatomic)UIActivityIndicatorView *aiv;
+@property(strong,nonatomic)CLLocationManager *locMgr;
+@property(strong,nonatomic)CLLocation *location;
 @end
 
 @implementation ListViewController
@@ -44,12 +47,14 @@
    // activity.name=@"活动";
     [self naviConfig];
     [self uiLayout];
+    [self loactionConfig];
     [self dataInitialize];
-    
+  
 }
 //每次将要来到这个页面的时候
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self LocationStart];
 }
 //每次到达了这个页面
 -(void)viewDidAppear:(BOOL)animated{
@@ -97,6 +102,33 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(void)loactionConfig{
+    _locMgr = [CLLocationManager new];
+    //签协议
+    _locMgr.delegate = self;
+    //识别定位到的设备位移多少距离进行一次识别
+    _locMgr.distanceFilter = kCLDistanceFilterNone ;
+    //设置定位精度（把地球分割成边长多少精度的方块）
+    _locMgr.desiredAccuracy = kCLLocationAccuracyBest;
+
+}
+//这个方法处理开始定位
+-(void)LocationStart{
+//判断用户有没有选择过是否使用定位
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
+        //询问用户是否愿意使用定位
+#ifdef __IPHONE_8_0
+        if([_locMgr respondsToSelector:@selector(requestWhenInUseAuthorization)]){
+            //使用“使用中打开定位”这个策略去运用定位功能
+            [_locMgr requestWhenInUseAuthorization];
+        }
+#endif
+
+    }
+    //打开定位服务的开关（开始定位）
+    [_locMgr startUpdatingLocation];
+}
 //初始化一个下拉刷新控件
 -(void)refreshConfiguration{
     UIRefreshControl *refreshControl=[[UIRefreshControl alloc]init];
@@ -133,6 +165,8 @@
 -(void)dataInitialize{
     //初始化
     _arr=[NSMutableArray new];
+    isLoading = NO;
+    firstVisit = YES;
     //创建菊花膜
     _aiv=[Utilities getCoverOnView:self.view];
     [self refreshPage];
@@ -147,22 +181,6 @@
 -(void)networkRequest{
     perPage=10;
     
-    /*NSDictionary *dictA= @{@"name" :@"哈哈" ,@"content":@"在家里哈哈大笑,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈哈哈大笑。",@"like":@80,@"unlike":@30,@"imgURL":@"http://7u2h3s.com2.z0.glb.qiniucdn.com/activityImg_2_0B28535F-B789-4E8B-9B5D-28DEDB728E9A",@"isFavo":@YES};
-    NSDictionary *dictB= @{@"name" :@"哭" ,@"content":@"在家里嚎啕大哭,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈嚎啕大哭。",@"like":@60,@"unlike":@20,@"imgURL":@"http://7u2h3s.com2.z0.glb.qiniucdn.com/activityImg_1_885E76C7-7EA0-423D-B029-2085C0F769E6",@"isFavo":@NO};
-    NSDictionary *dictC= @{@"name" :@"苦笑" ,@"content":@"在家里苦笑不得,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈发神经。",@"like":@90,@"unlike":@110,@"imgURL":@"http://7u2h3s.com2.z0.glb.qiniucdn.com/activityImg_3_2ADCF0CE-0A2F-46F0-869E-7E1BCAF455C1",@"isFavo":@NO};
-    NSDictionary *dictD= @{@"name" :@"哈哈" ,@"content":@"在家里哈哈大笑,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈哈哈大笑几哈时间傻吊加速度。",@"like":@80,@"unlike":@30,@"imgURL":@"http://7u2h3s.com2.z0.glb.qiniucdn.com/activityImg_2_0B28535F-B789-4E8B-9B5D-28DEDB728E9A",@"isFavo":@NO};*/
-    
-     //_arr = @[dictA,dictB,dictC,dictD];//
-
-    /*把模型存进array的数组里去
-    NSMutableArray *array =[NSMutableArray arrayWithObjects:dictA,dictB,dictC,dictD, nil];
-    //遍历数组
-    for(NSDictionary *dict in array) {
-        //用ActivityModel类中定义的初始化方法nitWIthDictionary:将遍历得来的字典dict转化成为ActivityModel对象
-        ActivityModel *activityModel=[[ActivityModel alloc] initWithDictionary:dict];
-        //将上述实例化好的ActivityModel对象插入
-        [_arr addObject:activityModel];
-    }*/
     
     if (!isLoading) {
         isLoading=YES;
@@ -249,7 +267,7 @@
     //将http请求的字符串转换为NSURL
     NSURL *URL=[NSURL URLWithString:activity.imgUrl];
     //依靠SDWebLmage来异步地下载一张远程路径下的图片并三级缓存在项目中，同时为下载的时间周期过程中设置一张临时占位图
-    [cell.activityImageView sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:@"lll"]];
+    [cell.activityImageView sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:@"露营"]];
     //将URL给NSData（下载）
     //NSData *data=[NSData dataWithContentsOfURL: URL];
     //转化成图片
@@ -264,54 +282,13 @@
     cell.activityUnlikeLabel.text=[NSString stringWithFormat:@"踩:%ld",(long)activity.unlike ];
     //给每一行的收藏按钮打上下标，用了区分它是哪一行的按钮
     cell.favoBtn.tag=100000+indexPath.row;
-    /*1.
-     if (activity.isFavo){
-        cell.favoBtn.titleLabel.text=@"取消收藏";
-    }else{
-        cell.favoBtn.titleLabel.text=@"收藏";
-    }*/
-   /* //根据isFavo的值判断按钮的标题是什么
-    2.
-    NSString *title=activity.isFavo?@"取消收藏":@"收藏";
-    //定义标题
-    [cell.favoBtn setTitle:title forState:UIControlStateNormal];*/
-    //title=activity.isFavo?@"取消收藏":@"收藏"
-    //3.
+   
     [cell.favoBtn setTitle:activity.isFavo?@"取消收藏":@"收藏" forState:UIControlStateNormal];
     //调用longPress的细胞
     [self longPress:cell];
     
 
 
-    //组号
-    //indexPath.section;
-    //行号
-    //判断当前正在渲染细胞属于第几行
-    /*if(indexPath.row == 0){
-        //第一行的情况下
-        //修改图片中图片的内容
-        cell.activityImageView.image=[UIImage imageNamed:@"Image"];
-        //修改标签中文字的内容
-        cell.actiivityNameLabel.text=@"哈哈";
-        cell.activityInFolabel.text=@"在家里哈哈大笑,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈哈哈大笑。";
-        cell.activityLikeLabel.text=@"顶=80";
-        cell.activityUnlikeLabel.text=@"踩=10";
-    }else if (indexPath.row == 1){
-        //修改图片中图片的内容
-        cell.activityImageView.image=[UIImage imageNamed:@"ooo"];
-        //修改标签中文字的内容
-        cell.actiivityNameLabel.text=@"哭";
-        cell.activityInFolabel.text=@"在家里嚎啕大哭,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈嚎啕大哭。";
-        cell.activityLikeLabel.text=@"顶=888";
-        cell.activityUnlikeLabel.text=@"踩=555";
-    }else{//修改图片中图片的内容
-        cell.activityImageView.image=[UIImage imageNamed:@"lll"];
-        //修改标签中文字的内容
-        cell.actiivityNameLabel.text=@"边哭边笑";
-        cell.activityInFolabel.text=@"在家里苦笑不得,在寝室，在学校，在街道，在卢彬家看到卢彬在猪圈发神经。";
-        cell.activityLikeLabel.text=@"顶=999";
-        cell.activityUnlikeLabel.text=@"踩=777";
-    }*/
     return cell;
 }
 //添加一个长按手势事件
@@ -349,7 +326,7 @@
             _zoomIv.userInteractionEnabled=YES;
             _zoomIv.backgroundColor=[UIColor blackColor];
             //_zoomIv.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:activity.imgUrl]]];
-            [_zoomIv sd_setImageWithURL:[NSURL URLWithString:activity.imgUrl] placeholderImage:[UIImage imageNamed:@"lll"]];
+            [_zoomIv sd_setImageWithURL:[NSURL URLWithString:activity.imgUrl] placeholderImage:[UIImage imageNamed:@"露营"]];
             //设置图片放入内容模式
             _zoomIv.contentMode = UIViewContentModeScaleAspectFit;
             //获得窗口实例，并将大图放置到窗口实例上，根据苹果规则，后添加的控件会覆盖前添加的控件
@@ -494,5 +471,71 @@
         //3.把数据给下一页预备好的接收容器
         detailVC.activity1 =activity;
     }
+}
+- (IBAction)SwitchAction:(UIBarButtonItem *)sender {
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"LeftSwitch" object:nil];
+}
+//定位失败的情况
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error{
+    if(error){
+        switch (error.code) {
+            case kCLErrorNetwork:
+                [Utilities popUpAlertViewWithMsg:NSLocalizedString(@"NetworkError", nil) andTitle:nil onView:self];
+                break;
+            case kCLErrorDenied:
+               [Utilities popUpAlertViewWithMsg:NSLocalizedString(@"GPSDisabled", nil) andTitle:nil onView:self];
+                break;
+            case kCLErrorLocationUnknown:
+            [Utilities popUpAlertViewWithMsg:NSLocalizedString(@"LocationUnkonw", nil) andTitle:nil onView:self];
+                break;
+            default:[Utilities popUpAlertViewWithMsg:NSLocalizedString(@"SystemError", nil) andTitle:nil onView:self];
+                break;
+                break;
+        }
+    }
+}
+//定位成功的方法
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation{
+    NSLog(@"纬度：%f",newLocation.coordinate.latitude);
+    NSLog(@"经度：%f",newLocation.coordinate.longitude);
+    _location = newLocation;
+    //用flag思想判断是否可以去根据定位拿到城市
+    if(firstVisit){
+        firstVisit = !firstVisit;
+        //根据定位拿到城市
+       [self getRegeoViaCoordinate];
+    }
+}
+
+-(void)getRegeoViaCoordinate{
+    //duration表示从NOW开始过3个SEC
+    dispatch_time_t duration = dispatch_time(DISPATCH_TIME_NOW, 3 *NSEC_PER_SEC);
+    //用duration这个设置好的策略去做某些事
+    dispatch_after(duration, dispatch_get_main_queue(), ^{
+       //正式做事情
+        CLGeocoder *geo = [CLGeocoder new];
+        //反向地理编码
+        [geo reverseGeocodeLocation:_location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+            if(!error){
+                CLPlacemark *first = placemarks.firstObject;
+                NSDictionary *locDict = first.addressDictionary;
+                NSLog(@"locdict：%@",locDict);
+                NSString *cityStr = locDict[@"City"];
+               
+                cityStr = [cityStr substringToIndex:(cityStr.length - 1)];
+                NSLog(@"City:%@",cityStr);
+                     }
+        }];
+        //关掉开关
+        [_locMgr stopUpdatingLocation];
+        
+//        if ([_.currentTitle isEqualToString:@"苏州"]) {
+//            
+//        }
+    });
+   
 }
 @end
