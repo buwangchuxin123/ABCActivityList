@@ -29,6 +29,8 @@
 @property(strong,nonatomic)UIActivityIndicatorView *aiv;
 @property(strong,nonatomic)CLLocationManager *locMgr;
 @property(strong,nonatomic)CLLocation *location;
+@property (weak, nonatomic) IBOutlet UIButton *CityBtn;
+
 @end
 
 @implementation ListViewController
@@ -527,15 +529,20 @@
                
                 cityStr = [cityStr substringToIndex:(cityStr.length - 1)];
                 NSLog(@"City:%@",cityStr);
-                     }
+                
+            
+            if ([_CityBtn.currentTitle isEqualToString:@"苏州"]) {
+                    NSLog(@"哈哈");
+                 _CityBtn.titleLabel.text = cityStr;
+            }else{
+                
+            }
+            }
         }];
-        //关掉开关
-        [_locMgr stopUpdatingLocation];
+          //关掉开关
+           [_locMgr stopUpdatingLocation];
         
-//        if ([_.currentTitle isEqualToString:@"苏州"]) {
-//            
-//        }
-    });
+            });
    
 }
 @end

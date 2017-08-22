@@ -154,12 +154,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="CityBtn" destination="rfI-9r-gzs" id="5Ca-PH-GVZ"/>
                         <outlet property="activityTableView" destination="VS0-rd-sL2" id="igl-Lc-bpT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2476" y="-16"/>
+            <point key="canvasLocation" x="1598" y="58"/>
         </scene>
         <!--城市列表-->
         <scene sceneID="k1G-SP-QJh">
@@ -216,7 +217,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sNj-Q9-veK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="470" y="93"/>
+            <point key="canvasLocation" x="674" y="71"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xN9-4i-GSG">
