@@ -2,10 +2,9 @@
   Localizable.strings
   ActivityList
 
-  Created by admin on 2017/8/21.
+  Created by admin001 on 2017/8/21.
   Copyright © 2017年 Education. All rights reserved.
 */
-"Wuliwuli" = "嘟嘟嘟嘟";
 "NetworkError" = "请保持网络连接畅通";
 "GPSDisabled" = "请打开定位";
 "LocationUnkonw" = "当前位置无法获得";

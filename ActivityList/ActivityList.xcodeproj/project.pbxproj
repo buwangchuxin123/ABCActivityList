@@ -39,7 +39,6 @@
 		845BAF3D1F48271100B82A23 /* SigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845BAF3C1F48271100B82A23 /* SigninViewController.m */; };
 		845BAF401F48275400B82A23 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845BAF3F1F48275400B82A23 /* SignUpViewController.m */; };
 		84679C971F28615B00DC9BEC /* ActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84679C961F28615B00DC9BEC /* ActivityModel.m */; };
-		846C07761F4AC28D0048ED0D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 846C07781F4AC28D0048ED0D /* Localizable.strings */; };
 		8480EF4E1F25D84B0063F4CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480EF4D1F25D84B0063F4CB /* main.m */; };
 		8480EF511F25D84B0063F4CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480EF501F25D84B0063F4CB /* AppDelegate.m */; };
 		8480EF571F25D84B0063F4CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8480EF551F25D84B0063F4CB /* Main.storyboard */; };
@@ -61,6 +60,8 @@
 		84C98E941F2EF7F9006C2D4E /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C98E8B1F2EF7F9006C2D4E /* Utilities.m */; };
 		84C98E971F2EFBBD006C2D4E /* Openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C98E961F2EFBBD006C2D4E /* Openssl.framework */; };
 		84C98E9E1F2EFCEC006C2D4E /* BasicEncodingRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C98E9D1F2EFCEC006C2D4E /* BasicEncodingRules.m */; };
+		EE20BAFB1F4AC28D00FDCF42 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE20BAFD1F4AC28D00FDCF42 /* Localizable.strings */; };
+		EE8508B71F4BCBC800D451A1 /* Cities.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE8508B61F4BCBC800D451A1 /* Cities.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,7 +138,6 @@
 		845BAF3F1F48275400B82A23 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		84679C951F28615B00DC9BEC /* ActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityModel.h; sourceTree = "<group>"; };
 		84679C961F28615B00DC9BEC /* ActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityModel.m; sourceTree = "<group>"; };
-		846C07771F4AC28D0048ED0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8480EF491F25D84B0063F4CB /* ActivityList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActivityList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8480EF4D1F25D84B0063F4CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8480EF4F1F25D84B0063F4CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -180,6 +180,8 @@
 		84C98E9D1F2EFCEC006C2D4E /* BasicEncodingRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicEncodingRules.m; sourceTree = "<group>"; };
 		8562B97917B75166C76678D3 /* Pods-ActivityList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActivityList.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActivityList/Pods-ActivityList.debug.xcconfig"; sourceTree = "<group>"; };
 		CF2C436205E9D063A088709D /* Pods-ActivityList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActivityList.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActivityList/Pods-ActivityList.release.xcconfig"; sourceTree = "<group>"; };
+		EE20BAFC1F4AC28D00FDCF42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EE8508B61F4BCBC800D451A1 /* Cities.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Cities.plist; path = ../../Cities.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,8 +341,9 @@
 				8480EF501F25D84B0063F4CB /* AppDelegate.m */,
 				8480EF4D1F25D84B0063F4CB /* main.m */,
 				8480EF601F25D84B0063F4CB /* Info.plist */,
+				EE8508B61F4BCBC800D451A1 /* Cities.plist */,
 				8480EF8E1F25DF740063F4CB /* PrefixHeader.pch */,
-				846C07781F4AC28D0048ED0D /* Localizable.strings */,
+				EE20BAFD1F4AC28D00FDCF42 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			path = ..;
@@ -422,9 +425,9 @@
 				84C98E851F2EF7F9006C2D4E /* NSString+Crypt.m */,
 				84C98E861F2EF7F9006C2D4E /* RequestAPI.h */,
 				84C98E871F2EF7F9006C2D4E /* RequestAPI.m */,
-				84C98E881F2EF7F9006C2D4E /* StorageMgr.h */,
 				84C98E8A1F2EF7F9006C2D4E /* Utilities.h */,
 				84C98E8B1F2EF7F9006C2D4E /* Utilities.m */,
+				84C98E881F2EF7F9006C2D4E /* StorageMgr.h */,
 				84C98E891F2EF7F9006C2D4E /* StorageMgr.m */,
 				845BAF1B1F47EC7B00B82A23 /* JSONS.h */,
 				845BAF1C1F47EC7B00B82A23 /* JSONS.m */,
@@ -595,10 +598,11 @@
 				8480EF5F1F25D84B0063F4CB /* LaunchScreen.storyboard in Resources */,
 				8480EF5C1F25D84B0063F4CB /* Assets.xcassets in Resources */,
 				845BAF1F1F48033200B82A23 /* Member.storyboard in Resources */,
-				846C07761F4AC28D0048ED0D /* Localizable.strings in Resources */,
+				EE20BAFB1F4AC28D00FDCF42 /* Localizable.strings in Resources */,
 				8480EF571F25D84B0063F4CB /* Main.storyboard in Resources */,
 				845BAF211F48035300B82A23 /* Issue.storyboard in Resources */,
 				84904F441F272EFA00594F06 /* Detail.storyboard in Resources */,
+				EE8508B71F4BCBC800D451A1 /* Cities.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,7 +638,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		CE64F9087CC7904721135FE5 /* [CP] Embed Pods Frameworks */ = {
@@ -744,14 +748,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		846C07781F4AC28D0048ED0D /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				846C07771F4AC28D0048ED0D /* Base */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		8480EF551F25D84B0063F4CB /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -768,6 +764,14 @@
 			);
 			name = LaunchScreen.storyboard;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		EE20BAFD1F4AC28D00FDCF42 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EE20BAFC1F4AC28D00FDCF42 /* Base */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

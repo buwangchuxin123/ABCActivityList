@@ -5,7 +5,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>请打开定位，我们只会提供服务，不会干别的</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>请打开定位，方便我们全程对你实施监视</string>
+	<string>请打开定位，方便我们全面对你实施监视</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
